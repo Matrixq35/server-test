@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <h1 id="onlineUser">Online users: 0</h1>
+    <h2 id="balance">Balance: 0</h2>
+    <button id="tapButton">tap</button>
+
+
+    <script>
+      const socket = io(); // подключение к серверу
+
+      const balanceEl = document.getElementById("balance");
+      const tapBtn = document.getElementById("tapButton");
+      const onlineUser = document.getElementById("onlineUser");
+
+      socket.on("onlineUsers", (count) => {
+        onlineUser.innerText = `Online users: ${count}`;
+      })
+
+      socket.on("balanceUpdate", (newBalance) => {
+        balanceEl.innerText = `Balance: ${newBalance}`;
+      });
+
+      // Отправка события "addPoint" на сервер
+      tapBtn.addEventListener("click", () => {
+        socket.emit("addPoint");
+});
+    </script>
+</body>
+</html>
